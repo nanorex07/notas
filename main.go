@@ -4,12 +4,12 @@ import (
 	"log"
 
 	tea "github.com/charmbracelet/bubbletea"
-	"github.com/nanorex07/notas/models"
+	"github.com/nanorex07/notas/root"
 )
 
 func main() {
 
-	rootModel := models.NewRootModel()
+	rootModel := root.NewRootModel()
 	p := tea.NewProgram(rootModel, tea.WithAltScreen())
 
 	if _, err := p.Run(); err != nil {

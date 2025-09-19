@@ -1,10 +1,12 @@
-package models
+package root
 
 import (
 	"strings"
 
+	tea "github.com/charmbracelet/bubbletea"
 	"github.com/charmbracelet/lipgloss"
-	"github.com/nanorex07/notas/models/dashboard"
+	"github.com/nanorex07/notas/dashboard"
+	"github.com/nanorex07/notas/types"
 )
 
 var (
@@ -33,25 +35,19 @@ const (
 	DisplayView
 )
 
-func (v ActiveView) String() string {
-	switch v {
-	case DashboardView:
-		return "Dashboard"
-	case EditView:
-		return "Edit"
-	case DisplayView:
-		return "View"
-	default:
-		return "Unknown"
-	}
-}
-
-func (m RootModel) ActiveViewInstance() ViewInstance {
+func (m RootModel) ActiveViewInstance() types.ViewInstance {
 	switch m.ActiveView {
 	case DashboardView:
-		return dashboard.NewDashboardModel()
+		return m.dashboardView
 	}
 	return nil
+}
+
+func (m RootModel) UpdateActionViewInstance(model tea.Model) {
+	switch m.ActiveView {
+	case DashboardView:
+		m.dashboardView = model.(dashboard.DashboardModel)
+	}
 }
 
 func (m RootModel) View() string {
@@ -66,7 +62,7 @@ func (m RootModel) View() string {
 	viewBuilder.WriteString(activeViewInstance.View())
 	viewBuilder.WriteString("\n\n")
 
-	helpSection := m.Help.View(activeViewInstance.KeyBindings())
+	helpSection := m.appSettings.HelpModel.View(activeViewInstance.KeyBindings())
 	viewBuilder.WriteString(helpSection)
 
 	return globalStyle.Render(viewBuilder.String())

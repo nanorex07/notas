@@ -1,7 +1,7 @@
 .PHONY: build run
 
 build:
-	go build -o notas .
+	go clean && go build -o build/notas .
 
-run: build
-	./notas
+run:
+	./build/notas

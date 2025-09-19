@@ -1,5 +1,5 @@
 package dashboard
 
 func (m DashboardModel) View() string {
-	return "Dashboard"
+	return m.list.Render()
 }
