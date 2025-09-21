@@ -3,9 +3,7 @@ package root
 import (
 	"strings"
 
-	tea "github.com/charmbracelet/bubbletea"
 	"github.com/charmbracelet/lipgloss"
-	"github.com/nanorex07/notas/dashboard"
 	"github.com/nanorex07/notas/types"
 )
 
@@ -27,27 +25,14 @@ var (
 		Padding(0, 2).Bold(true).Align(lipgloss.Center)
 )
 
-type ActiveView int
-
-const (
-	DashboardView ActiveView = iota
-	EditView
-	DisplayView
-)
-
 func (m RootModel) ActiveViewInstance() types.ViewInstance {
-	switch m.ActiveView {
-	case DashboardView:
+	switch m.appSettings.ActiveView {
+	case types.DashboardView:
 		return m.dashboardView
+	case types.EditView:
+		return m.editView
 	}
 	return nil
-}
-
-func (m RootModel) UpdateActionViewInstance(model tea.Model) {
-	switch m.ActiveView {
-	case DashboardView:
-		m.dashboardView = model.(dashboard.DashboardModel)
-	}
 }
 
 func (m RootModel) View() string {

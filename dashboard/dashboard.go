@@ -6,6 +6,7 @@ import (
 	tea "github.com/charmbracelet/bubbletea"
 	"github.com/nanorex07/notas/components"
 	settings "github.com/nanorex07/notas/settings"
+	"github.com/nanorex07/notas/types"
 )
 
 type DashboardModel struct {
@@ -61,12 +62,15 @@ func (m DashboardModel) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 		case key.Matches(msg, dashboardKeys.Help):
 			m.appSettings.HelpModel.ShowAll = !m.appSettings.HelpModel.ShowAll
 		case key.Matches(msg, dashboardKeys.Quit):
-			return DashboardModel{}, tea.Quit
+			return m, tea.Quit
 
 		case key.Matches(msg, dashboardKeys.Up):
 			m.list.Up()
 		case key.Matches(msg, dashboardKeys.Down):
 			m.list.Down()
+		case key.Matches(msg, dashboardKeys.New):
+			m.appSettings.EditViewMode = types.CreateMode
+			m.appSettings.ActiveView = types.EditView
 		}
 	}
 	return m, tea.Batch(cmds...)
