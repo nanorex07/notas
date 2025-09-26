@@ -1,6 +1,10 @@
 package edit
 
-import "github.com/nanorex07/notas/types"
+import (
+	"strings"
+
+	"github.com/nanorex07/notas/types"
+)
 
 func (m EditModel) View() string {
 
@@ -11,5 +15,11 @@ func (m EditModel) View() string {
 		m.heading.SetText("Edit note")
 	}
 
-	return m.heading.Render()
+	viewBuilder := strings.Builder{}
+	for i := range m.inputs {
+		viewBuilder.WriteString(m.inputs[i].View())
+		viewBuilder.WriteString("\n\n")
+	}
+
+	return viewBuilder.String()
 }
